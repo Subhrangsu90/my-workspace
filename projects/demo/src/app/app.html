@@ -56,7 +56,8 @@
                 size="small"
                 [invalid]="
                   testForm.controls.phoneAutocomplete.invalid &&
-                  (testForm.controls.phoneAutocomplete.dirty || testForm.controls.phoneAutocomplete.touched)
+                  (testForm.controls.phoneAutocomplete.dirty ||
+                    testForm.controls.phoneAutocomplete.touched)
                 "
               />
 
@@ -217,6 +218,94 @@
         </div>
       </div>
 
+      <div
+        class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8 space-y-6"
+      >
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Publish-ready examples</h2>
+          <p class="text-sm text-gray-500">
+            Common integration modes a production app can copy directly.
+          </p>
+        </div>
+
+        <div class="grid gap-5 lg:grid-cols-2">
+          <section class="example-panel">
+            <h3>Template-driven form</h3>
+            <ng-tel-input-autocomplete
+              inputId="template-demo-phone"
+              name="templateDemoPhone"
+              [ngModel]="templatePhone()"
+              (ngModelChange)="templatePhone.set($event)"
+              [ngModelOptions]="{ standalone: true }"
+              defaultCountry="IN"
+              [suggestionsEnabled]="false"
+            />
+            <code>{{ templatePhone() || 'null' }}</code>
+          </section>
+
+          <section class="example-panel">
+            <h3>Object output</h3>
+            <ng-tel-input-autocomplete
+              outputFormat="object"
+              defaultCountry="GB"
+              [suggestionsEnabled]="false"
+              (valueChange)="objectValue.set($event)"
+            />
+            <code>{{ objectValue() | json }}</code>
+          </section>
+
+          <section class="example-panel">
+            <h3>Restricted countries</h3>
+            <ng-tel-input-autocomplete
+              defaultCountry="US"
+              [allowedCountries]="['US', 'CA', 'GB', 'IN']"
+              [suggestionsEnabled]="false"
+              [resetCountryOnClear]="true"
+            />
+            <p>Clear resets this field back to its configured default country.</p>
+          </section>
+
+          <section class="example-panel enterprise-phone-demo">
+            <h3>Design-system theme</h3>
+            <ng-tel-input-autocomplete
+              defaultCountry="DE"
+              [suggestionsEnabled]="false"
+              variant="filled"
+              fluid
+              (valueChange)="darkPhone.set($event)"
+            />
+            <code>{{ darkPhone() || 'null' }}</code>
+          </section>
+        </div>
+
+        <ng-template #selectedCountry let-country>
+          <span class="inline-flex items-center gap-2 font-semibold">
+            <span>{{ country.flag }}</span>
+            <span>{{ country.dialCode }}</span>
+          </span>
+        </ng-template>
+
+        <ng-template #countryOption let-country let-selected="selected">
+          <span class="flex min-w-0 items-center gap-3">
+            <span>{{ country.flag }}</span>
+            <span class="truncate">{{ country.name }}</span>
+            <span class="font-mono text-xs text-slate-500">{{ country.dialCode }}</span>
+          </span>
+          @if (selected) {
+            <span class="text-xs font-bold text-blue-600">Selected</span>
+          }
+        </ng-template>
+
+        <section class="example-panel">
+          <h3>Custom templates</h3>
+          <ng-tel-input-autocomplete
+            defaultCountry="FR"
+            [suggestionsEnabled]="false"
+            [selectedCountryTemplate]="selectedCountry"
+            [countryTemplate]="countryOption"
+          />
+        </section>
+      </div>
       <!-- Right Column: Form State & Config -->
       <div class="space-y-6">
         <!-- Form State Card -->
@@ -335,4 +424,3 @@
     Built for ChaiCode Libraries Monorepo Workspace. &copy; 2026.
   </div>
 </div>
-

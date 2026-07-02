@@ -88,9 +88,30 @@ export interface AutoCompleteLazyLoadEvent {
 export type PhoneInputValue = PhoneNumberValue | string | null;
 export type FlagMode = 'emoji' | 'image';
 export type FlagUrlResolver = (countryCode: string) => string;
+
+export interface NgTelInputAutocompleteConfig {
+  defaultCountry: string;
+  allowedCountries: readonly string[];
+  excludedCountries: readonly string[];
+  outputFormat: 'string' | 'object';
+  autocomplete: string;
+  inputMode: string;
+  suggestionsEnabled: boolean;
+  contactSearchEnabled: boolean;
+  validationEnabled: boolean;
+  minQueryLength: number | null;
+  delay: number | null;
+  completeOnFocus: boolean;
+  showClear: boolean;
+  resetCountryOnClear: boolean;
+  fluid: boolean;
+  variant: 'filled' | 'outlined';
+  size: 'small' | 'large' | null;
+  flagMode: FlagMode;
+  flagUrl: FlagUrlResolver | null;
+}
+
+export type NgTelInputAutocompleteConfigInput = Partial<NgTelInputAutocompleteConfig>;
 export type NgTelInputClassValue =
-  | string
-  | readonly string[]
-  | Set<string>
-  | Record<string, boolean | null | undefined>;
+  string | readonly string[] | Set<string> | Record<string, boolean | null | undefined>;
 export type NgTelInputStyleValue = Record<string, string | number | null | undefined>;

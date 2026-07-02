@@ -2,6 +2,7 @@ import { Component, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgTelInputAutocomplete } from './ng-tel-input-autocomplete';
+import { provideNgTelInputAutocomplete } from '../../config/ng-tel-input-autocomplete.config';
 import { PhoneInputValue, PhoneNumberValue } from '../../models/ng-tel-input-autocomplete.types';
 
 @Component({
@@ -413,6 +414,52 @@ describe('NgTelInputAutocomplete', () => {
 
     expect(component.validate(control)).toBeNull();
     expect(component.isValid()).toBe(true);
+  });
+
+  it('should reset the selected country on clear when configured', async () => {
+    fixture.componentRef.setInput('defaultCountry', 'IN');
+    fixture.componentRef.setInput('resetCountryOnClear', true);
+    await fixture.whenStable();
+
+    component.writeValue({ countryCode: 'EG', number: '1012345678' });
+    expect(component.selectedCountry()?.code).toBe('EG');
+
+    component.clearValue();
+    await fixture.whenStable();
+
+    expect(component.inputValue()).toBe('');
+    expect(component.selectedCountry()?.code).toBe('IN');
+  });
+
+  it('should use application-wide defaults from provideNgTelInputAutocomplete', async () => {
+    TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [NgTelInputAutocomplete],
+      providers: [
+        provideNgTelInputAutocomplete({
+          defaultCountry: 'IN',
+          flagMode: 'image',
+          suggestionsEnabled: false,
+          validationEnabled: false,
+          resetCountryOnClear: true,
+          size: 'small',
+        }),
+      ],
+    }).compileComponents();
+
+    const configuredFixture = TestBed.createComponent(NgTelInputAutocomplete);
+    const configured = configuredFixture.componentInstance;
+    await configuredFixture.whenStable();
+
+    expect(configured.defaultCountry()).toBe('IN');
+    expect(configured.selectedCountry()?.code).toBe('IN');
+    expect(configured.flagMode()).toBe('image');
+    expect(configured.suggestionsEnabled()).toBe(false);
+    expect(configured.validationEnabled()).toBe(false);
+    expect(configured.resetCountryOnClear()).toBe(true);
+    expect(configured.size()).toBe('small');
+
+    configuredFixture.destroy();
   });
 
   it('should support template-driven forms', async () => {

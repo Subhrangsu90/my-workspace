@@ -39,6 +39,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTelInputAutocompleteService } from '../../services/ng-tel-input-autocomplete.service';
 import { NgTelInputDropdown } from '../dropdown/ng-tel-input-dropdown';
 import { NgTelInputIcon } from '../icon/ng-tel-input-icons';
+import { NG_TEL_INPUT_AUTOCOMPLETE_CONFIG } from '../../config/ng-tel-input-autocomplete.config';
 import {
   AutoCompleteCompleteEvent,
   AutoCompleteDropdownClickEvent,
@@ -87,6 +88,7 @@ type DropdownItem = Country | PhoneSuggestion;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Validator {
+  private readonly config = inject(NG_TEL_INPUT_AUTOCOMPLETE_CONFIG);
   private readonly phoneService = inject(NgTelInputAutocompleteService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
@@ -96,13 +98,13 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   // Inputs
   readonly inputId = input(`ng-tel-input-${++nextUniqueId}`);
   readonly ariaLabel = input('International phone number');
-  readonly defaultCountry = input('US');
-  readonly allowedCountries = input<readonly string[]>([]);
-  readonly excludedCountries = input<readonly string[]>([]);
-  readonly outputFormat = input<'string' | 'object'>('string');
+  readonly defaultCountry = input(this.config.defaultCountry);
+  readonly allowedCountries = input<readonly string[]>(this.config.allowedCountries);
+  readonly excludedCountries = input<readonly string[]>(this.config.excludedCountries);
+  readonly outputFormat = input<'string' | 'object'>(this.config.outputFormat);
   readonly name = input<string | null>(null);
-  readonly autocomplete = input('tel');
-  readonly inputMode = input('tel');
+  readonly autocomplete = input(this.config.autocomplete);
+  readonly inputMode = input(this.config.inputMode);
   readonly direction = input<'ltr' | 'rtl' | 'auto' | null>(null, { alias: 'dir' });
   readonly enterKeyHint = input<string | null>(null);
   readonly pattern = input<string | null>(null);
@@ -122,18 +124,29 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   readonly ariaLabelledBy = input<string | null>(null);
   readonly placeholder = input<string | null>(null);
   readonly countrySearchUrl = input<string | null>(null);
-  readonly suggestionsEnabled = input(true, { transform: booleanAttribute });
-  readonly contactSearchEnabled = input(true, { transform: booleanAttribute });
-  readonly validationEnabled = input(true, { transform: booleanAttribute });
-  readonly minQueryLength = input<number | null, unknown>(null, { transform: numberAttribute });
-  readonly delay = input<number | null, unknown>(null, { transform: numberAttribute });
-  readonly completeOnFocus = input(true, { transform: booleanAttribute });
-  readonly showClear = input(true, { transform: booleanAttribute });
-  readonly fluid = input(false, { transform: booleanAttribute });
-  readonly variant = input<'filled' | 'outlined'>('outlined');
-  readonly size = input<'small' | 'large' | null>(null);
-  readonly flagMode = input<FlagMode>('emoji');
-  readonly flagUrl = input<FlagUrlResolver | null>(null);
+  readonly suggestionsEnabled = input(this.config.suggestionsEnabled, {
+    transform: booleanAttribute,
+  });
+  readonly contactSearchEnabled = input(this.config.contactSearchEnabled, {
+    transform: booleanAttribute,
+  });
+  readonly validationEnabled = input(this.config.validationEnabled, {
+    transform: booleanAttribute,
+  });
+  readonly minQueryLength = input<number | null, unknown>(this.config.minQueryLength, {
+    transform: numberAttribute,
+  });
+  readonly delay = input<number | null, unknown>(this.config.delay, { transform: numberAttribute });
+  readonly completeOnFocus = input(this.config.completeOnFocus, { transform: booleanAttribute });
+  readonly showClear = input(this.config.showClear, { transform: booleanAttribute });
+  readonly resetCountryOnClear = input(this.config.resetCountryOnClear, {
+    transform: booleanAttribute,
+  });
+  readonly fluid = input(this.config.fluid, { transform: booleanAttribute });
+  readonly variant = input<'filled' | 'outlined'>(this.config.variant);
+  readonly size = input<'small' | 'large' | null>(this.config.size);
+  readonly flagMode = input<FlagMode>(this.config.flagMode);
+  readonly flagUrl = input<FlagUrlResolver | null>(this.config.flagUrl);
   readonly selectedCountryTemplate = input<TemplateRef<CountryTemplateContext> | null>(null);
   readonly countryTemplate = input<TemplateRef<CountryTemplateContext> | null>(null);
   readonly suggestionTemplate = input<TemplateRef<SuggestionTemplateContext> | null>(null);
@@ -714,6 +727,9 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
     if (this.isReadOnly()) return;
 
     this.inputValue.set('');
+    if (this.resetCountryOnClear()) {
+      this.selectedCountry.set(this.getDefaultCountry());
+    }
     this.propagateChanges();
     this.updateAngularControlState();
     this.updateSuggestionsState('');

@@ -1,0 +1,59 @@
+.example-panel {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 0.75rem;
+  background: rgb(248 250 252 / 0.72);
+}
+
+.example-panel h3 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 0.875rem;
+  font-weight: 750;
+}
+
+.example-panel p {
+  margin: 0;
+  color: rgb(100 116 139);
+  font-size: 0.75rem;
+}
+
+.example-panel code {
+  display: block;
+  min-height: 1.75rem;
+  overflow-wrap: anywhere;
+  border-radius: 0.5rem;
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.625rem;
+}
+
+.enterprise-phone-demo {
+  background: rgb(15 23 42);
+  border-color: rgb(51 65 85);
+}
+
+.enterprise-phone-demo h3,
+.enterprise-phone-demo p {
+  color: rgb(226 232 240);
+}
+
+.enterprise-phone-demo ng-tel-input-autocomplete {
+  --ngti-color-surface: #111827;
+  --ngti-color-surface-muted: #1f2937;
+  --ngti-color-surface-hover: #263244;
+  --ngti-color-text: #f8fafc;
+  --ngti-color-text-muted: #cbd5e1;
+  --ngti-color-text-soft: #94a3b8;
+  --ngti-color-border: #475569;
+  --ngti-color-border-strong: #64748b;
+  --ngti-color-primary: #14b8a6;
+  --ngti-color-primary-strong: #5eead4;
+  --ngti-color-primary-soft: #0f766e;
+  --ngti-color-primary-border: #2dd4bf;
+  --ngti-shadow-sm: none;
+}

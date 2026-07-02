@@ -33,5 +33,16 @@
     "intl-tel-input": "^29.1.1",
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Subhrangsu90/ng-tel-input-autocomplete.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Subhrangsu90/ng-tel-input-autocomplete/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Subhrangsu90"
+  }
 }
