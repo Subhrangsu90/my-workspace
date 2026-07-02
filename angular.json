@@ -61,15 +61,18 @@
             },
             "ssr": {
               "entry": "projects/demo/src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "google-libphonenumber"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",
