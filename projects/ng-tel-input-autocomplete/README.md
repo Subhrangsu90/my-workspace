@@ -143,11 +143,12 @@ The default `outputFormat="string"` emits a valid E.164 value such as `+91987654
 
 ```ts
 interface PhoneNumberValue {
+  number: string;
+  internationalNumber: string;
+  nationalNumber: string;
+  e164Number: string;
   countryCode: string;
   dialCode: string;
-  number: string;
-  formattedNumber: string;
-  fullNumber: string;
 }
 ```
 

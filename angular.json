@@ -55,7 +55,7 @@
               "projects/demo/src/styles.css"
             ],
             "server": "projects/demo/src/main.server.ts",
-            "outputMode": "server",
+            "outputMode": "static",
             "security": {
               "allowedHosts": []
             },

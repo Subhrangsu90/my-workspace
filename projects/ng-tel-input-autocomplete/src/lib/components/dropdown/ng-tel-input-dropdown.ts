@@ -25,6 +25,7 @@ import {
   NgTelInputStyleValue,
 } from '../../models/ng-tel-input-autocomplete.types';
 import { NgTelInputIcon } from '../icon/ng-tel-input-icons';
+import { escapeHtml, getFlagEmoji } from '../../utils/utils';
 
 type DropdownItem = Country | PhoneSuggestion;
 
@@ -116,12 +117,7 @@ export class NgTelInputDropdown implements OnChanges, AfterViewInit {
   }
 
   flagEmoji(countryCode: string): string {
-    if (!/^[a-z]{2}$/i.test(countryCode)) return '🌐';
-    return countryCode
-      .toUpperCase()
-      .split('')
-      .map((character) => String.fromCodePoint(127397 + character.charCodeAt(0)))
-      .join('');
+    return getFlagEmoji(countryCode);
   }
 
   focusSearch(): void {
@@ -156,7 +152,7 @@ export class NgTelInputDropdown implements OnChanges, AfterViewInit {
   }
 
   getHighlightedText(text: string, search: string): SafeHtml {
-    const escapedText = this.escapeHtml(text || '');
+    const escapedText = escapeHtml(text || '');
     if (!search) return escapedText;
     const escapedSearch = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     const highlighted = escapedText.replace(
@@ -164,15 +160,6 @@ export class NgTelInputDropdown implements OnChanges, AfterViewInit {
       '<mark style="background:var(--ngti-color-highlight-bg,#dbeafe);color:var(--ngti-color-highlight-text,#172554);font-weight:700;border-radius:.2rem;padding:0 .05rem">$1</mark>',
     );
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
-  }
-
-  private escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
   }
 
   handleKeyDown(event: KeyboardEvent): void {

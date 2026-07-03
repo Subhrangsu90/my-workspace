@@ -8,11 +8,12 @@ export interface Country {
 }
 
 export interface PhoneNumberValue {
-  countryCode: string; // e.g. "US"
-  dialCode: string; // e.g. "+1"
   number: string; // Raw digits (excluding dial code) e.g. "2015550123"
-  formattedNumber: string; // Formatted number e.g. "(201) 555-0123"
-  fullNumber: string; // e.g. "+1 201 555 0123" or "+1(201) 555-0123" (dialCode + space + formattedNumber)
+  internationalNumber: string; // Internationally formatted number e.g. "+966 874 587 4587"
+  nationalNumber: string; // Nationally formatted number e.g. "874 587 4587"
+  e164Number: string; // E164 formatted number e.g. "+9668745874587"
+  countryCode: string; // ISO 3166-1 alpha-2 code e.g. "SA"
+  dialCode: string; // Dial code e.g. "+966"
 }
 
 export interface PhoneSuggestion {

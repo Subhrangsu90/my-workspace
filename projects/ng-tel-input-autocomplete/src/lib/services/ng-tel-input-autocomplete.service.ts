@@ -1,4 +1,6 @@
 import { Injectable, inject } from '@angular/core';
+// HttpClient and HttpParams are only used when countrySearchUrl is configured.
+// Tree-shaking removes them for consumers who never use the server-side country API.
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, of, throwError } from 'rxjs';
 import * as lpn from 'google-libphonenumber';
@@ -9,6 +11,7 @@ import {
   PhoneNumberValue,
 } from '../models/ng-tel-input-autocomplete.types';
 import { COUNTRIES } from '../data/countries-data';
+import { escapeHtml, getFlagEmoji } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -18,17 +21,7 @@ export class NgTelInputAutocompleteService {
   private readonly phoneUtil = lpn.PhoneNumberUtil.getInstance();
   private cachedCountries: Country[] | null = null;
 
-  private getFlagEmoji(countryCode: string): string {
-    const codePoints = countryCode
-      .toUpperCase()
-      .split('')
-      .map((char) => 127397 + char.charCodeAt(0));
-    try {
-      return String.fromCodePoint(...codePoints);
-    } catch {
-      return '🌐';
-    }
-  }
+
 
   /**
    * Expose local fallback list of countries enriched from intl-tel-input
@@ -76,7 +69,7 @@ export class NgTelInputAutocompleteService {
           name: name,
           code: codeUpper,
           dialCode: `+${c.dialCode}`,
-          flag: this.getFlagEmoji(c.iso2),
+          flag: getFlagEmoji(c.iso2),
           format: '', // Managed live by AsYouTypeFormatter
           placeholder: placeholder,
         };
@@ -176,21 +169,24 @@ export class NgTelInputAutocompleteService {
         parsed,
         lpn.PhoneNumberFormat.INTERNATIONAL,
       );
+      const formattedE164 = this.phoneUtil.format(parsed, lpn.PhoneNumberFormat.E164);
 
       return {
+        number: parsed.getNationalNumber()?.toString() || rawDigits,
+        internationalNumber: formattedInternational,
+        nationalNumber: formattedNational,
+        e164Number: formattedE164,
         countryCode: country.code,
         dialCode: country.dialCode,
-        number: parsed.getNationalNumber()?.toString() || rawDigits,
-        formattedNumber: formattedNational,
-        fullNumber: formattedInternational,
       };
     } catch {
       return {
+        number: rawDigits,
+        internationalNumber: `${country.dialCode} ${formatted}`.trim(),
+        nationalNumber: formatted,
+        e164Number: `${country.dialCode}${rawDigits}`,
         countryCode: country.code,
         dialCode: country.dialCode,
-        number: rawDigits,
-        formattedNumber: formatted,
-        fullNumber: `${country.dialCode} ${formatted}`.trim(),
       };
     }
   }
@@ -307,25 +303,16 @@ export class NgTelInputAutocompleteService {
    */
   highlightMatch(text: string, query: string): string {
     if (!text) return '';
-    if (!query) return this.escapeHtml(text);
+    if (!query) return escapeHtml(text);
 
-    const escapedText = this.escapeHtml(text);
+    const escapedText = escapeHtml(text);
     const sanitizedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     if (!sanitizedQuery) return escapedText;
 
     const regex = new RegExp(`(${sanitizedQuery})`, 'gi');
     return escapedText.replace(
       regex,
-      '<strong class="text-blue-600 font-bold bg-blue-100/80 px-0.5 rounded">$1</strong>',
+      '<mark style="background:var(--ngti-color-highlight-bg,#dbeafe);color:var(--ngti-color-highlight-text,#172554);font-weight:700;border-radius:.2rem;padding:0 .05rem">$1</mark>',
     );
-  }
-
-  private escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
   }
 }

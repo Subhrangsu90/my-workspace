@@ -22,3 +22,5 @@ jobs:
       - run: npm ci
       - run: npm run verify:lib
       - run: npm publish ./dist/ng-tel-input-autocomplete --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

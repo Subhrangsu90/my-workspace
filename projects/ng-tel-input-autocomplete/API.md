@@ -298,13 +298,14 @@ The phone input uses the `combobox` role with `aria-autocomplete`, `aria-expande
 
 ### PhoneNumberValue
 
-| Field             | Type     | Description                                        |
-| ----------------- | -------- | -------------------------------------------------- |
-| `countryCode`     | `string` | Selected ISO alpha-2 country code.                 |
-| `dialCode`        | `string` | Selected international dialing prefix.             |
-| `number`          | `string` | National number digits without the dialing prefix. |
-| `formattedNumber` | `string` | Nationally formatted number.                       |
-| `fullNumber`      | `string` | Internationally formatted number.                  |
+| Field                 | Type     | Description                                        |
+| --------------------- | -------- | -------------------------------------------------- |
+| `number`              | `string` | National number digits without the dialing prefix. |
+| `internationalNumber` | `string` | Internationally formatted number.                  |
+| `nationalNumber`      | `string` | Nationally formatted number.                       |
+| `e164Number`          | `string` | E.164 formatted phone number.                      |
+| `countryCode`         | `string` | Selected ISO alpha-2 country code.                 |
+| `dialCode`            | `string` | Selected international dialing prefix.             |
 
 ### CountrySearchResponse
 

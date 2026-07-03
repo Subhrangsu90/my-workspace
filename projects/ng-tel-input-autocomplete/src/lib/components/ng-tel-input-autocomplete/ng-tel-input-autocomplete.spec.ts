@@ -273,7 +273,11 @@ describe('NgTelInputAutocomplete', () => {
 
     const emitted = onChange.mock.lastCall?.[0] as PhoneNumberValue;
     expect(emitted.countryCode).toBe('US');
+    expect(emitted.dialCode).toBe('+1');
     expect(emitted.number).toBe('2025550143');
+    expect(emitted.nationalNumber).toBe('(202) 555-0143');
+    expect(emitted.internationalNumber).toBe('+1 202-555-0143');
+    expect(emitted.e164Number).toBe('+12025550143');
   });
 
   it('should emit complete, focus, blur, key, clear, and lazy-load events', async () => {

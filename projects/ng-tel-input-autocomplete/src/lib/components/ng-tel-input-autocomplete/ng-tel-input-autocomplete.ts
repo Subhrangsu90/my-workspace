@@ -18,7 +18,9 @@ import {
   ChangeDetectionStrategy,
   numberAttribute,
   untracked,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -61,7 +63,15 @@ import {
   NgTelInputStyleValue,
 } from '../../models/ng-tel-input-autocomplete.types';
 
-let nextUniqueId = 0;
+function generateUniqueId(): string {
+  try {
+    const bytes = new Uint8Array(4);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(36)).join('');
+  } catch {
+    return Math.random().toString(36).substring(2, 8);
+  }
+}
 type DropdownItem = Country | PhoneSuggestion;
 
 @Component({
@@ -96,7 +106,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   private readonly parentNgForm = inject(NgForm, { optional: true, skipSelf: true });
 
   // Inputs
-  readonly inputId = input(`ng-tel-input-${++nextUniqueId}`);
+  readonly inputId = input(`ng-tel-input-${generateUniqueId()}`);
   readonly ariaLabel = input('International phone number');
   readonly defaultCountry = input(this.config.defaultCountry);
   readonly allowedCountries = input<readonly string[]>(this.config.allowedCountries);
@@ -208,6 +218,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   isFocused = signal(false);
   formDisabled = signal(false);
   hasError = signal(false);
+  private isDestroyed = false;
   private readonly angularControlStateVersion = signal(0);
   private ngControl: NgControl | null = null;
   isDisabled = computed(() => this.disabled() || this.formDisabled());
@@ -302,6 +313,10 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   }
 
   constructor() {
+    this.destroyRef.onDestroy(() => {
+      this.isDestroyed = true;
+    });
+
     effect(() => {
       const defaultCountry = this.getDefaultCountry();
       if (defaultCountry && !untracked(this.inputValue)) {
@@ -396,6 +411,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
     this.angularControlStateVersion.update((version) => version + 1);
   }
   private setCountryOverlayOpen(open: boolean): void {
+    if (this.isDestroyed) return;
     if (this.isOpen() === open) return;
     this.isOpen.set(open);
     if (open) {
@@ -406,6 +422,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   }
 
   private setSuggestionsOpen(open: boolean): void {
+    if (this.isDestroyed) return;
     if (this.showSuggestions() === open) return;
     this.showSuggestions.set(open);
     if (open) {
@@ -456,7 +473,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
   }
 
   private isCountry(item: DropdownItem): item is Country {
-    return 'dialCode' in item && 'placeholder' in item;
+    return !('phoneNumber' in item);
   }
 
   private isPhoneSuggestion(item: DropdownItem): item is PhoneSuggestion {
@@ -716,11 +733,14 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
     this.validateSelf();
     this.updateAngularControlState();
 
-    setTimeout(() => {
-      if (!this.isFocused()) {
-        this.closeSuggestions();
-      }
-    }, 200);
+    // Delay closing to allow click events on suggestion items to fire first
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (!this.isFocused()) {
+          this.closeSuggestions();
+        }
+      }, 150);
+    });
   }
 
   clearValue(): void {
@@ -804,10 +824,7 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
     return outputValue;
   }
 
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    // Triggers change detection on window resize to reposition and resize overlay
-  }
+
 
   getOverlayWidth(): number {
     const el = this.containerEl()?.nativeElement;
@@ -852,9 +869,10 @@ export class NgTelInputAutocomplete implements OnInit, ControlValueAccessor, Val
     }
 
     if (typeof value === 'object' && value !== null) {
-      const phoneValue = value as Partial<PhoneNumberValue> & { code?: string };
+      const phoneValue = value as Partial<PhoneNumberValue> & { code?: string; formattedNumber?: string };
       const countryCode = phoneValue.countryCode || phoneValue.code;
-      const numberToFormat = phoneValue.number || phoneValue.formattedNumber || '';
+      const numberToFormat =
+        phoneValue.number || phoneValue.nationalNumber || phoneValue.formattedNumber || '';
 
       if (countryCode) {
         const found = this.phoneService
