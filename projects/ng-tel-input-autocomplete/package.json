@@ -1,6 +1,6 @@
 {
   "name": "ng-tel-input-autocomplete",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Accessible international telephone input and contact autocomplete for modern Angular applications.",
   "keywords": [
     "angular",

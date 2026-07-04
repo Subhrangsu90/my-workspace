@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.1 - 2026-07-04
+
+- Renamed repository to `tel-input-autocomplete` and updated all repository, issue tracker, and documentation URL references.
+- Added project funding configuration (`.github/FUNDING.yml`).
+
 ## 0.1.0 - 2026-07-03
 
 - Restructured `PhoneNumberValue` properties to use standard, professional names:
