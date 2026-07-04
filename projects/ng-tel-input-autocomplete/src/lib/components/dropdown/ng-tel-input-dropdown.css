@@ -30,10 +30,24 @@
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: .5rem;
     padding: var(--ngti-space-search-block) var(--ngti-space-search-inline);
     border-bottom: 1px solid var(--ngti-color-border);
     background: color-mix(in srgb, var(--ngti-color-surface-muted) 92%, white);
+}
+
+.ngti-search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.ngti-search-input-container .ngti-search-icon {
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    color: var(--ngti-color-text-soft);
+    pointer-events: none;
+    z-index: 2;
 }
 
 .ngti-search input {
@@ -41,11 +55,14 @@
     min-width: 0;
     border: 1px solid var(--ngti-color-border);
     border-radius: var(--ngti-radius-sm);
-    padding: var(--ngti-space-search-input);
+    padding: 0.45rem 2.25rem;
     outline: 0;
-    background: transparent;
+    background: var(--ngti-color-surface);
     color: var(--ngti-color-text);
     font: inherit;
+    transition:
+        border-color var(--ngti-transition-fast),
+        box-shadow var(--ngti-transition-fast);
 }
 
 .ngti-search input::placeholder {
@@ -53,14 +70,39 @@
 }
 
 .ngti-search input:focus-visible {
-    outline: 1px solid var(--ngti-color-primary);
-    outline-offset: 0;
-    border-radius: var(--ngti-radius-sm);
+    outline: none;
+    border-color: var(--ngti-color-primary);
+    box-shadow: var(--ngti-shadow-focus);
 }
 
-.ngti-search-icon {
-    flex: none;
+.ngti-clear-button {
+    position: absolute;
+    inset-inline-end: 0.35rem;
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ngti-radius-sm);
+    background: transparent;
     color: var(--ngti-color-text-soft);
+    cursor: pointer;
+    transition:
+        background-color var(--ngti-transition-fast),
+        color var(--ngti-transition-fast);
+    z-index: 2;
+}
+
+.ngti-clear-button:hover {
+    background: var(--ngti-color-surface-hover);
+    color: var(--ngti-color-text);
+}
+
+.ngti-clear-button:focus-visible {
+    outline: 1px solid var(--ngti-color-primary);
+    outline-offset: -1px;
 }
 
 .ngti-icon-button {
@@ -306,7 +348,6 @@
 
 .ngti-divider {
     height: 1px;
-    margin: var(--ngti-space-divider-margin, 0.25rem 0);
     background-color: var(--ngti-color-border-soft, #e2e8f0);
 }
 

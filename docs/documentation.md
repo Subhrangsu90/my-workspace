@@ -211,7 +211,7 @@ Use the class/style inputs to customize the built-in UI while keeping the compon
 ```html
 <ng-tel-input-autocomplete
   containerClass="rounded-phone"
-  [containerStyle]="{ borderColor: '#2563eb' }"
+  [containerStyle]="{ borderColor: '#18181b' }"
   inputClass="phone-text"
   [dropdownStyle]="{ maxHeight: '18rem' }"
 />

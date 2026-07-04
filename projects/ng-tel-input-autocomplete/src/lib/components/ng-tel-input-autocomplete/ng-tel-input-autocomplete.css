@@ -316,7 +316,7 @@
 }
 
 .ngti-switch-button:hover {
-  background: rgb(37 99 235 / 0.08);
+  background: color-mix(in srgb, var(--ngti-color-primary) 8%, transparent);
 }
 
 .ngti-sr-only {

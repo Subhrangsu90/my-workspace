@@ -1,22 +1,22 @@
 :host {
   --ngti-color-surface: #ffffff;
-  --ngti-color-surface-muted: #f8fafc;
-  --ngti-color-surface-hover: #f4f7fb;
-  --ngti-color-option-active: #f3f7ff;
-  --ngti-color-option-selected: #eef5ff;
+  --ngti-color-surface-muted: #fafafa;
+  --ngti-color-surface-hover: #f4f4f5;
+  --ngti-color-option-active: #f4f4f5;
+  --ngti-color-option-selected: #e4e4e7;
   --ngti-color-surface-raised: #ffffff;
-  --ngti-color-text: #111827;
-  --ngti-color-text-muted: #64748b;
-  --ngti-color-text-soft: #94a3b8;
-  --ngti-color-border: #d8e0eb;
-  --ngti-color-border-soft: #eef2f7;
-  --ngti-color-border-strong: #c5cedb;
-  --ngti-color-primary: #2563eb;
-  --ngti-color-primary-strong: #1d4ed8;
-  --ngti-color-primary-soft: #eff6ff;
-  --ngti-color-primary-border: #bfdbfe;
-  --ngti-color-highlight-bg: #dbeafe;
-  --ngti-color-highlight-text: #172554;
+  --ngti-color-text: #09090b;
+  --ngti-color-text-muted: #52525b;
+  --ngti-color-text-soft: #a1a1aa;
+  --ngti-color-border: #e4e4e7;
+  --ngti-color-border-soft: #f4f4f5;
+  --ngti-color-border-strong: #cbd5e1;
+  --ngti-color-primary: #18181b;
+  --ngti-color-primary-strong: #09090b;
+  --ngti-color-primary-soft: #f4f4f5;
+  --ngti-color-primary-border: #cbd5e1;
+  --ngti-color-highlight-bg: #f4f4f5;
+  --ngti-color-highlight-text: #09090b;
   --ngti-color-success: #059669;
   --ngti-color-danger: #dc2626;
   --ngti-color-danger-border: #ef4444;
@@ -45,7 +45,7 @@
   --ngti-space-option-inline: .75rem;
   --ngti-space-option-gap: .625rem;
   --ngti-space-option-copy-gap: .1rem;
-  --ngti-space-search-block: .2rem;
+  --ngti-space-search-block: .45rem;
   --ngti-space-search-inline: .45rem;
   --ngti-space-search-input: .25rem;
   --ngti-space-badge-block: .2rem;
@@ -53,7 +53,7 @@
 
   --ngti-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ngti-shadow-sm: 0 1px 1px rgb(15 23 42 / .04);
-  --ngti-shadow-focus: 0 0 0 1px rgb(37 99 235 / .34);
+  --ngti-shadow-focus: 0 0 0 1px rgb(9 9 11 / .12);
   --ngti-shadow-danger: 0 0 0 1px rgb(220 38 38 / .36);
   --ngti-shadow-dropdown: 0 8px 18px rgb(15 23 42 / .10), 0 1px 3px rgb(15 23 42 / .08);
   --ngti-transition-fast: 150ms ease;

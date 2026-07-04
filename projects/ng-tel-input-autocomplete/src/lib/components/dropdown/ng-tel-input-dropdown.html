@@ -6,32 +6,34 @@
 >
   @if (type() === 'countries') {
     <div class="ngti-search">
-      <lib-tel-icon name="search" class="ngti-search-icon" aria-hidden="true" />
-      <input
-        #searchInput
-        type="search"
-        [id]="searchInputId"
-        [value]="searchQuery()"
-        (input)="onSearchInput($event)"
-        placeholder="Search country or dial code"
-        aria-label="Search countries"
-        role="combobox"
-        aria-autocomplete="list"
-        aria-expanded="true"
-        [attr.aria-controls]="listboxId"
-        [attr.aria-activedescendant]="activeOptionId"
-        autocomplete="off"
-      />
-      @if (searchQuery()) {
-        <button
-          type="button"
-          class="ngti-icon-button"
-          (click)="clearSearch()"
-          aria-label="Clear country search"
-        >
-          <lib-tel-icon name="close" aria-hidden="true" />
-        </button>
-      }
+      <div class="ngti-search-input-container">
+        <lib-tel-icon name="search" class="ngti-search-icon" aria-hidden="true" />
+        <input
+          #searchInput
+          type="search"
+          [id]="searchInputId"
+          [value]="searchQuery()"
+          (input)="onSearchInput($event)"
+          placeholder="Search country or dial code"
+          aria-label="Search countries"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="true"
+          [attr.aria-controls]="listboxId"
+          [attr.aria-activedescendant]="activeOptionId"
+          autocomplete="off"
+        />
+        @if (searchQuery()) {
+          <button
+            type="button"
+            class="ngti-clear-button"
+            (click)="clearSearch()"
+            aria-label="Clear country search"
+          >
+            <lib-tel-icon name="close" aria-hidden="true" />
+          </button>
+        }
+      </div>
     </div>
   }
 
