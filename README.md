@@ -1,4 +1,4 @@
-# ng-tel-input-autocomplete Workspace
+# Angular International Telephone Input Workspace (`ng-tel-input-autocomplete`)
 
 [![npm downloads](https://img.shields.io/npm/dw/ng-tel-input-autocomplete.svg)](https://www.npmjs.com/package/ng-tel-input-autocomplete)
 [![npm version](https://img.shields.io/npm/v/ng-tel-input-autocomplete.svg)](https://www.npmjs.com/package/ng-tel-input-autocomplete)

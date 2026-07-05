@@ -4,15 +4,20 @@
   "description": "Accessible international telephone input and contact autocomplete for modern Angular applications.",
   "keywords": [
     "angular",
+    "angular-component",
     "telephone",
     "phone-input",
     "autocomplete",
     "international",
     "forms",
+    "reactive-forms",
     "accessibility",
+    "a11y",
     "intl-tel-input",
-    "phone number",
-    "validation"
+    "phone-number",
+    "validation",
+    "google-libphonenumber",
+    "tel-input"
   ],
   "author": "Subhrangsu Bera",
   "license": "MIT",

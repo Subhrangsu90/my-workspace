@@ -1,4 +1,4 @@
-# ng-tel-input-autocomplete
+# Angular International Telephone Input & Contact Autocomplete (`ng-tel-input-autocomplete`)
 
 [![npm version](https://img.shields.io/npm/v/ng-tel-input-autocomplete.svg)](https://www.npmjs.com/package/ng-tel-input-autocomplete)
 [![Angular](https://img.shields.io/badge/angular-21-dd0031.svg)](https://angular.dev/)
